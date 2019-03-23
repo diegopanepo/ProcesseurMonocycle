@@ -1,0 +1,27 @@
+vsim -gui work.monocycle
+add wave -position 0  sim:/monocycle/clk
+add wave -position 1  sim:/monocycle/rst
+add wave -position end  sim:/monocycle/M3/UC1/instr_courante
+add wave -position end  sim:/monocycle/M2/UG2/Addr
+add wave -position insertpoint  \
+sim:/monocycle/M1/UT1/Banc(2) \
+sim:/monocycle/M1/UT1/Banc(1) \
+sim:/monocycle/M1/UT1/Banc(0) \
+sim:/monocycle/M1/UT5/mem(42)
+force -freeze sim:/monocycle/clk 0 0, 1 {50 ns} -r 100
+force -freeze sim:/monocycle/rst 1 0
+run 50 ns
+force -freeze sim:/monocycle/rst 0 0
+run 6 us
+
+vsim -gui work.mono_testb
+add wave -position insertpoint \
+sim:/mono_testb/clk \
+sim:/mono_testb/rst \
+sim:/mono_testb/PC \
+sim:/mono_testb/M0/M3/UC1/instr_courante \
+sim:/mono_testb/M0/M1/UT1/Banc(2) \
+sim:/mono_testb/M0/M1/UT1/Banc(1) \
+sim:/mono_testb/M0/M1/UT1/Banc(0) \
+sim:/mono_testb/M0/M1/UT5/mem(42)
+run -all
